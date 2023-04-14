@@ -33,3 +33,21 @@ def overview(df):
     df.info()
     print('--- Column Descriptions')
     print(df.describe(include='all'))
+    
+    
+def hypothesis_test(data, x, y, alpha=0.05):
+    # Perform Pearson correlation test
+    r, p = stats.pearsonr(data[x], data[y])
+    print(f"The Pearson correlation coefficient between {x} and {y} is {r:.2f} with a p-value of {p:.2f}")
+
+    # Determine whether to accept or reject null hypothesis
+    if p < alpha:
+        print(f"Since the p-value is less than {alpha}, we can reject the null hypothesis and conclude that {x} and {y}           are correlated.")
+        print('_______________________________________________________')
+    else:
+        print(f"Since the p-value is greater than or equal to {alpha}, we fail to reject the null hypothesis and conclude         that there is insufficient evidence to suggest a correlation between {x} and {y}.")
+        print('_______________________________________________________')
+
+
+
+
