@@ -13,6 +13,12 @@ from sklearn.model_selection import train_test_split
 
 
 
+def prepare(df):
+    df.columns = df.columns.str.replace(' ', '_')
+    return df
+
+
+
 def split(df):
     '''
     This function splits a dataframe into 
