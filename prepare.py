@@ -1,3 +1,12 @@
+# import
+import Acquire as a 
+import numpy as np
+import pandas as pd
+import seaborn as sns 
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+
+
 # Functions to use for our data 
 
 
