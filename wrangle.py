@@ -1,5 +1,5 @@
 # Our standard imports
-import Acquire as a 
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -31,10 +31,10 @@ def acquire_data():
     return df
 
 def prepare(df):
-   '''
-   This function cleans the dataframe and replaces spaces with underscores. 
-   '''
-#   Here we set the df.columns to be replaces with the columsn with underscores instead of spaces to help data miniplualtion in pandas.
+    '''
+    This function cleans the dataframe and replaces spaces with underscores
+    '''
+    # Here we set the df.columns to be replaces with the columsn with underscores instead of spaces to help data miniplualtion in pandas.
     df.columns = df.columns.str.replace(' ', '_')
     
     # returns the dataframe with the cleaned columns
@@ -62,7 +62,14 @@ def split(df):
     # returns train validate and test dataframes
     return train, validate, test
                                        
-
+def wrangle():
+    '''
+    This function will perform acquisition, cleaning and spliting of the dataset via one command
+    '''
+    df = split(
+         prepare(
+             acquire_data()))
+    return df
 
 def overview(df):
     '''
