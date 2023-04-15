@@ -66,10 +66,10 @@ def wrangle():
     '''
     This function will perform acquisition, cleaning and spliting of the dataset via one command
     '''
-    df = split(
+    train, validate, test = split(
          prepare(
              acquire_data()))
-    return df
+    return train, validate, test
 
 def overview(df):
     '''
