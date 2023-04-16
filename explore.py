@@ -31,3 +31,22 @@ we can reject the null hypothesis and conclude that {x} and {y} are correlated."
 we fail to reject the null hypothesis and conclude \n\
 that there is insufficient evidence to suggest a correlation between {x} and {y}.")
         print('_______________________________________________________')
+        
+        
+def get_plot_alcohol_by_quantity(train):
+    '''
+    This function will show a plot of alcohol content by wine quality.
+    '''
+    # set figure size
+    plt.figure(figsize=(16,12))
+    # create the plot
+    sns.relplot(data=train.sample(1000), x='alcohol', y='quality')
+    # add a regression line
+    plt.axhline(color='red') #not right
+    # add a title
+    plt.title('As Alcohol Content Increases, Quality Also Increases', size=15)
+    # add axis labels
+    plt.xlabel('Alcohol Content in the Wine', size=14)
+    plt.ylabel('Quality Score of the Wine', size=14)
+    # show the plot
+    plt.show()
