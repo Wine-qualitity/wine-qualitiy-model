@@ -21,8 +21,8 @@ def acquire_data():
         df_2 = pd.read_csv('https://query.data.world/s/dth4xlpnfu3lnyln2lxfdms4vxf3hl?dws=00000')
         # we add the type of wine to the dataframe. 
         
-        df_1['type_of_wine'] = ['Red'] * len(df_1)
-        df_2['type_of_wine'] = ['White'] * len(df_2)
+        df_1['type_of_wine'] = ['red'] * len(df_1)
+        df_2['type_of_wine'] = ['white'] * len(df_2)
         # create a list of the two dataframes
         combine = [df_1,df_2]
         # Then we concatenate the two dataframes into the final dataframe
@@ -35,11 +35,14 @@ def prepare(df):
     '''
     This function cleans the dataframe and replaces spaces with underscores
     '''
-    # Here we set the df.columns to be replaces with the columsn with underscores instead of spaces to help data miniplualtion in pandas.
-    df.columns = df.columns.str.replace(' ', '_')
+    # Here we set the df.columns to be replaces with the columns with underscores instead of spaces to help data manipulation in pandas.
+    encoded = pd.get_dummies(df, columns=['type_of_wine'], drop_first=True)
+    df = pd.concat([df, encoded], axis=1)
     
-    # returns the dataframe with the cleaned columns
+    df.columns = df.columns.str.replace(' ', '_').str.lower()
+    # returns the dataframe with the cleaned columns and one-hot encoded columns
     return df
+
 
 
 
@@ -63,14 +66,13 @@ def split(df):
     # returns train validate and test dataframes
     return train, validate, test
                                        
-def wrangle():
-    '''
-    This function will perform acquisition, cleaning and spliting of the dataset via one command
-    '''
-    train, validate, test = split(
-         prepare(
-             acquire_data()))
-    return train, validate, test
+# def wrangle():
+#     '''
+#     This function will perform acquisition, cleaning and spliting of the dataset via one command
+#     '''
+# 	train, validate, test = split(prepare(acquire_data()))
+    
+# 	return train, validate, test
 
 def overview(df):
     '''

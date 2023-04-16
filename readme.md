@@ -30,7 +30,9 @@ This project will be focused on predicting a wine quality score based on various
 
 
 # Initial Hypotheses - Initial questions used to focus your project
-What are some
+H$_0$: There is no correlation between the quality of wine and individual features.
+
+H$_a$:There is a correlation between quality of wine and individual features. 
 
 
 # Project Plan - Guides the reader through the different stages of the pipeline as they relate to your project
@@ -54,3 +56,10 @@ Delivery - We will be packaging our findings in a final_report.ipynb file. We wi
 # Steps to Reproduce - Gives instructions for reproducing your work. i.e. Running your notebook on someone else's computer.
 
 You will need an account for data.world in order to acquire the dataset. Once the data has been acquired, you will need to have all .py files contained in the same local directory that has the final_report.ipynb file.
+
+
+# Data Citation 
+
+## The citation for the wine quality dataset is:
+
+	Cortez, P., Cerdeira, A., Almeida, F., Matos, T., & Reis, J. (2009). Modeling wine preferences by data mining from physicochemical properties. Decision Support Systems, 47(4), 547-553. https://doi.org/10.1016/j.dss.2009.05.016
