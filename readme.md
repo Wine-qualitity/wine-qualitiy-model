@@ -5,6 +5,24 @@
 
 Wine is one of the most popular drinks worldwide. There are many wines produced and this project can help determine some of the factors that determine if a wine is considered good or bad. Wine quality also has a large impact on how much can be charged for the wine by a restaurant or winery.
 
+## Wine data dictionary.
+
+| Field                 | Description                                                       |
+|-----------------------|-------------------------------------------------------------------|
+| Fixed Acidity         | Fixed acidity of the wine (g/l)                                    |
+| Volatile Acidity      | Volatile acidity of the wine (g/l)                                 |
+| Citric Acid           | Citric acid of the wine (g/l)                                      |
+| Residual Sugar        | Residual sugar of the wine (g/l)                                   |
+| Chlorides             | Chlorides of the wine (g/l)                                        |
+| Free Sulfur Dioxide   | Free sulfur dioxide of the wine (mg/l)                             |
+| Total Sulfur Dioxide  | Total sulfur dioxide of the wine (mg/l)                            |
+| Density               | Density of the wine (g/ml)                                         |
+| pH                    | pH value of the wine                                               |
+| Sulphates             | Sulphates of the wine (g/l)                                        |
+| Alcohol               | Alcohol content of the wine (% vol.)                               |
+| Quality               | Quality rating of the wine on a scale of 0 to 10 (median of at least 3 evaluations made by wine experts) |
+| Type_of_wine          | The type of wine red or white                                      |
+
 
 # Project Goal Clearly states what your project sets out to do and how the information gained can be applied to the real world
 
