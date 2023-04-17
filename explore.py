@@ -187,3 +187,18 @@ def scale_data(train,
         return scaler, train_scaled, validate_scaled, test_scaled
     else:
         return train_scaled, validate_scaled, test_scaled
+	
+
+	
+	
+	
+	
+def apply_kmeans(data,k):
+
+    kmeans = KMeans(n_clusters=k)
+
+    kmeans.fit(data)
+
+    data[f'k_means_{k}'] = kmeans.labels_
+    
+    return data
