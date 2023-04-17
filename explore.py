@@ -51,7 +51,7 @@ def get_plot_alcohol_by_quantity(train):
     # add a title
     plt.title('As Alcohol Content Increases, Quality Also Increases', size=15)
     # add axis labels
-    plt.xlabel('Alcohol Content in the Wine', size=14)
+    plt.xlabel('Alcohol Content of the Wine (% vol.)', size=14)
     plt.ylabel('Quality Score of the Wine', size=14)
     plt.annotate('correlation line', (13.2,6.5))
     # add a legend
@@ -73,7 +73,7 @@ def get_plot_density_by_quantity(train):
     # add a title
     plt.title('As Density Increases, Quality Decreases', size=15)
     # add axis labels
-    plt.xlabel('Density of the Wine', size=14)
+    plt.xlabel('Density of the Wine (g/ml)', size=14)
     plt.ylabel('Quality Score of the Wine', size=14)
     # add a label for the correlation line
     plt.annotate('correlation line', (.999,5.5))
@@ -95,7 +95,7 @@ def get_plot_chlorides_by_quantity(train):
     # add a title
     plt.title('As Chlorides Increases, Quality Decreases', size=15)
     # add axis labels
-    plt.xlabel('Chlorides of the Wine', size=14)
+    plt.xlabel('Chlorides in the wine (g/l)', size=14)
     plt.ylabel('Quality Score of the Wine', size=14)
     # add a label for the correlation line
     plt.annotate('correlation line', (.15,5.5))
