@@ -76,7 +76,7 @@ def get_plot_density_by_quantity(train):
     plt.xlabel('Density of the Wine', size=14)
     plt.ylabel('Quality Score of the Wine', size=14)
     # add a label for the correlation line
-    plt.annotate('correlation line', (13.2,6.5))
+    plt.annotate('correlation line', (.999,5.5))
     # show the plot
     plt.show()
 
