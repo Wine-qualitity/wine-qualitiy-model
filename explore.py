@@ -8,6 +8,8 @@ import seaborn as sns
 from sklearn.cluster import KMeans
 import pandas as pd
 
+#_______________________________
+
 def check_hypothesis(data, x, y, α=0.05, test=stats.pearsonr):
     '''
     This function will check the provided x and y variables from the 
@@ -32,11 +34,16 @@ we fail to reject the null hypothesis and conclude \n\
 that there is insufficient evidence to suggest a correlation between {x} and {y}.")
         print('_______________________________________________________')
         
-        
+#_______________________________
+
+
+		
 def get_plot_alcohol_by_quantity(train):
     '''
     This function will show a plot of alcohol content by wine quality.
     '''
+    # reset index
+    train = train.reset_index(drop=True)
     # set figure size
     plt.figure(figsize=(16,12))
     # create the plot
@@ -50,7 +57,19 @@ def get_plot_alcohol_by_quantity(train):
     plt.ylabel('Quality Score of the Wine', size=14)
     # show the plot
     plt.show()
-	
+#_______________________________
+
+
+
+def get_corr_heatmap(train):
+    corr_matrix = train.corr()
+    plt.figure(figsize=(10,10))
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+    plt.title('Heat Map of Correlation')
+    plt.show()
+
+
+#_______________________________
 	
 def find_k(X_train, cluster_vars, k_range):
     sse = []
@@ -101,6 +120,9 @@ def find_k(X_train, cluster_vars, k_range):
     plt.show()
 
     return k_comparisons_df
+
+
+#_______________________________
 	
 def cluster_columns(scaled_df, n_clusters):
     # Initialize an empty dictionary to store the cluster labels for each column
@@ -125,3 +147,36 @@ def cluster_columns(scaled_df, n_clusters):
 
     # Return the clusters_df
     return clusters_df
+
+#_______________________________
+
+
+def get_x_y_train_val_test(train,validate,test):
+    '''
+    This function will return 
+    X_train, y_train, X_validate, y_validate, X_test and y_test
+    
+    it will drop quality and types of wine if you want the type of wine it must
+    be defined else where 
+    
+    '''
+
+    # make a list of columns i want to drop 
+    x_drop_cols = ['quality', 'type_of_wine_white']
+
+    # drop and split train data
+    X_train = train.drop(columns= x_drop_cols)
+    y_train= train.quality 
+
+    # drop and split validate data
+
+    X_validate = validate.drop(columns= x_drop_cols)
+    y_validate = validate.quality
+
+
+    # Drop and split test data 
+
+    X_test = test.drop(columns= x_drop_cols)
+    y_test = test.quality 
+
+    return X_train, y_train, X_validate, y_validate, X_test, y_test
