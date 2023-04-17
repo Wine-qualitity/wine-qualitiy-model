@@ -36,27 +36,26 @@ that there is insufficient evidence to suggest a correlation between {x} and {y}
         
 #_______________________________
 
-
-		
 def get_plot_alcohol_by_quantity(train):
     '''
     This function will show a plot of alcohol content by wine quality.
     '''
-    # reset index
-    train = train.reset_index(drop=True)
     # set figure size
     plt.figure(figsize=(16,12))
     # create the plot
-    sns.relplot(data=train.sample(1000), x='alcohol', y='quality')
-    # add a regression line
-    plt.axhline(color='red') #not right
+    sns.lmplot(data=train, x='alcohol', y='quality', 
+               # add a line showing the correlation
+               line_kws={'color': 'red'})
     # add a title
     plt.title('As Alcohol Content Increases, Quality Also Increases', size=15)
     # add axis labels
     plt.xlabel('Alcohol Content in the Wine', size=14)
     plt.ylabel('Quality Score of the Wine', size=14)
+    plt.annotate('correlation line', (13.2,6.5))
+    # add a legend
     # show the plot
     plt.show()
+    
 #_______________________________
 
 
