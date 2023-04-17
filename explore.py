@@ -60,7 +60,27 @@ def get_plot_alcohol_by_quantity(train):
     
 #_______________________________
 
+def get_plot_density_by_quantity(train):
+    '''
+    This function will show a plot of density by wine quality.
+    '''
+    # set figure size
+    plt.figure(figsize=(16,12))
+    # create the plot
+    sns.lmplot(data=train.sample(1000), x='density', y='quality', palette='blues',
+               # add a line showing the correlation
+               line_kws={'color': 'red'})
+    # add a title
+    plt.title('As Density Increases, Quality Decreases', size=15)
+    # add axis labels
+    plt.xlabel('Density of the Wine', size=14)
+    plt.ylabel('Quality Score of the Wine', size=14)
+    # add a label for the correlation line
+    plt.annotate('correlation line', (13.2,6.5))
+    # show the plot
+    plt.show()
 
+#_______________________________
 
 def get_corr_heatmap(train):
     corr_matrix = train.corr()
