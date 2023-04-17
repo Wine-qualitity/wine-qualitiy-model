@@ -48,14 +48,7 @@ def prepare(df):
     '''
     This function cleans the dataframe and replaces spaces with underscores
     '''
-<<<<<<< HEAD
     df = pd.get_dummies(df, columns=['type_of_wine'], drop_first=True)
-=======
-    # Here we set the df.columns to be replaces with the columns with underscores instead of spaces to help data manipulation in pandas.
-    df = pd.get_dummies(df, columns=['type_of_wine'], drop_first=True)
-#     df = pd.concat([df, encoded], axis=1)
-    
->>>>>>> 3e371c7a303b6ba8306831780d8435dfd07193ea
     df.columns = df.columns.str.replace(' ', '_').str.lower()
     # returns the dataframe with the cleaned columns and one-hot encoded columns
     return df
@@ -83,18 +76,14 @@ def split(df):
     # returns train validate and test dataframes
     return train, validate, test
                                        
-<<<<<<< HEAD
 
 	
 	
-=======
->>>>>>> 3e371c7a303b6ba8306831780d8435dfd07193ea
 def wrangle():
     '''
     This function will perform acquisition, cleaning and spliting of the dataset via one command
     '''
     train, validate, test = split(prepare(acquire_data()))
-<<<<<<< HEAD
     
     return train, validate, test
 
@@ -102,9 +91,6 @@ def wrangle():
 
 
 
-=======
-    return train, validate, test
->>>>>>> 3e371c7a303b6ba8306831780d8435dfd07193ea
 
 def overview(df):
     '''
