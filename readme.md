@@ -5,23 +5,6 @@
 
 Wine is one of the most popular drinks worldwide. There are many wines produced and this project can help determine some of the factors that determine if a wine is considered good or bad. Wine quality also has a large impact on how much can be charged for the wine by a restaurant or winery.
 
-## Wine data dictionary.
-
-| Field                 | Description                                                       |
-|-----------------------|-------------------------------------------------------------------|
-| Fixed Acidity         | Fixed acidity of the wine (g/l)                                    |
-| Volatile Acidity      | Volatile acidity of the wine (g/l)                                 |
-| Citric Acid           | Citric acid of the wine (g/l)                                      |
-| Residual Sugar        | Residual sugar of the wine (g/l)                                   |
-| Chlorides             | Chlorides of the wine (g/l)                                        |
-| Free Sulfur Dioxide   | Free sulfur dioxide of the wine (mg/l)                             |
-| Total Sulfur Dioxide  | Total sulfur dioxide of the wine (mg/l)                            |
-| Density               | Density of the wine (g/ml)                                         |
-| pH                    | pH value of the wine                                               |
-| Sulphates             | Sulphates of the wine (g/l)                                        |
-| Alcohol               | Alcohol content of the wine (% vol.)                               |
-| Quality               | Quality rating of the wine on a scale of 0 to 10 (median of at least 3 evaluations made by wine experts) |
-| Type_of_wine          | The type of wine red or white                                      |
 
 
 # Project Goal Clearly states what your project sets out to do and how the information gained can be applied to the real world
@@ -47,15 +30,33 @@ H$_a$:There is a correlation between quality of wine and individual features.
 
 - Modeling - We will be approaching the problem as a linear regression problem. Therefore we will be making multiple models using regression algorithms such as Ordinary Least Squares (OLS), LASSO + LARS, Generalized Linear Model (Tweedie), and Polynomial Regression. We will be creating a baseline model using the mean of known quality scores. We will be evaluating our models using the Root Mean Squared Error (RMSE) and goodness of fit (R^2) metrics.
 
-Delivery - We will be packaging our findings in a final_report.ipynb file. We will also be creating a Canvas slide presentation using our findings and presenting them as if we were presenting to a winery supply chain marketing department on behalf of the California Wine Institute.
+- Delivery - We will be packaging our findings in a final_report.ipynb file. We will also be creating a Canvas slide presentation using our findings and presenting them as if we were presenting to a winery supply chain marketing department on behalf of the California Wine Institute.
 
 
 # Data Dictionary - Gives a definition for each of the features used in your report and the units they are measured in, if applicable
 
+## Wine data dictionary.
+
+| Field                 | Description                                                       |
+|-----------------------|-------------------------------------------------------------------|
+| Fixed Acidity         | Fixed acidity of the wine (g/l)                                    |
+| Volatile Acidity      | Volatile acidity of the wine (g/l)                                 |
+| Citric Acid           | Citric acid of the wine (g/l)                                      |
+| Residual Sugar        | Residual sugar of the wine (g/l)                                   |
+| Chlorides             | Chlorides of the wine (g/l)                                        |
+| Free Sulfur Dioxide   | Free sulfur dioxide of the wine (mg/l)                             |
+| Total Sulfur Dioxide  | Total sulfur dioxide of the wine (mg/l)                            |
+| Density               | Density of the wine (g/ml)                                         |
+| pH                    | pH value of the wine                                               |
+| Sulphates             | Sulphates of the wine (g/l)                                        |
+| Alcohol               | Alcohol content of the wine (% vol.)                               |
+| Quality               | Quality rating of the wine on a scale of 0 to 10 (median of at least 3 evaluations made by wine experts) |
+| Type_of_wine          | The type of wine red or white                                      |
+
 
 # Steps to Reproduce - Gives instructions for reproducing your work. i.e. Running your notebook on someone else's computer.
 
-You will need an account for data.world in order to acquire the dataset. Once the data has been acquired, you will need to have all .py files contained in the same local directory that has the final_report.ipynb file.
+You will need an account for data.world in order to acquire the dataset. Once the data has been acquired, you will need to have all .py files contained in the same local directory that has the final_report.ipynb file. 
 
 
 # Data Citation 

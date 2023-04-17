@@ -6,7 +6,9 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.cluster import KMeans
-import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
+
 
 #_______________________________
 
@@ -71,82 +73,42 @@ def get_corr_heatmap(train):
 
 #_______________________________
 	
-def find_k(X_train, cluster_vars, k_range):
-    sse = []
-    for k in k_range:
+
+def best_kmeans(data,k_max):
+    
+    '''
+    EXAMPLE USEAGE
+    
+    data = scaled_train[['alcohol', 'quality']]
+    
+    best_kmeans(data,k_max=10)
+    
+     will produce elbow graph with clusters
+    '''
+   
+
+
+    means = []
+    
+    inertia = []
+    
+    for k in range(1, k_max):
         kmeans = KMeans(n_clusters=k)
-
-        # X[0] is our X_train dataframe..the first dataframe in the list of dataframes stored in X. 
-        kmeans.fit(X_train)
-#i think this part might need to be X_train[cluster_vars],
-# otherwise it is looking at clustering all of the columns together
-
         
+        kmeans.fit(data)
         
-        # inertia: Sum of squared distances of samples to their closest cluster center.
-        sse.append(kmeans.inertia_) 
-
-    # compute the difference from one k to the next
-    delta = [round(sse[i] - sse[i+1],0) for i in range(len(sse)-1)]
-
-    # compute the percent difference from one k to the next
-    pct_delta = [round(((sse[i] - sse[i+1])/sse[i])*100, 1) for i in range(len(sse)-1)]
-
-    # create a dataframe with all of our metrics to compare them across values of k: SSE, delta, pct_delta
-    k_comparisons_df = pd.DataFrame(dict(k=k_range[0:-1], 
-                             sse=sse[0:-1], 
-                             delta=delta, 
-                             pct_delta=pct_delta))
-
-    # plot k with inertia
-    plt.plot(k_comparisons_df.k, k_comparisons_df.sse, 'bx-')
-    plt.xlabel('k')
-    plt.ylabel('SSE')
-    plt.title('The Elbow Method to find the optimal k\nFor which k values do we see large decreases in SSE?')
-    plt.show()
-
-    # plot k with pct_delta
-    plt.plot(k_comparisons_df.k, k_comparisons_df.pct_delta, 'bx-')
-    plt.xlabel('k')
-    plt.ylabel('Percent Change')
-    plt.title('For which k values are we seeing increased changes (%) in SSE?')
-    plt.show()
-
-    # plot k with delta
-    plt.plot(k_comparisons_df.k, k_comparisons_df.delta, 'bx-')
-    plt.xlabel('k')
-    plt.ylabel('Absolute Change in SSE')
-    plt.title('For which k values are we seeing increased changes (absolute) in SSE?')
-    plt.show()
-
-    return k_comparisons_df
+        means.append(k)
+        
+        inertia.append(kmeans.inertia_)
+        
+        fig =plt.subplots(figsize=(10,5))
+        plt.plot(means,inertia, 'o-')
+        plt.xlabel('means')
+        plt.ylabel('inertia')
+        plt.grid(True)
+        plt.show()
 
 
-#_______________________________
-	
-def cluster_columns(scaled_df, n_clusters):
-    # Initialize an empty dictionary to store the cluster labels for each column
-    clusters_dict = {}
-
-    # Loop over each column in the scaled DataFrame
-    for col in scaled_df.columns:
-        # Initialize a k-means model with n_clusters
-        kmeans = KMeans(n_clusters=n_clusters)
-
-        # Fit the model to the column data
-        kmeans.fit(scaled_df[col].values.reshape(-1, 1))
-
-        # Get the cluster labels for each data point in the column
-        col_clusters = kmeans.labels_
-
-        # Add the cluster labels to the clusters_dict with the column name as the key
-        clusters_dict[col] = col_clusters
-
-    # Create a new DataFrame from the clusters_dict
-    clusters_df = pd.DataFrame(clusters_dict)
-
-    # Return the clusters_df
-    return clusters_df
 
 #_______________________________
 
@@ -180,3 +142,48 @@ def get_x_y_train_val_test(train,validate,test):
     y_test = test.quality 
 
     return X_train, y_train, X_validate, y_validate, X_test, y_test
+
+
+
+
+def scale_data(train, 
+               validate, 
+               test, 
+               columns_to_scale=['fixed_acidity', 'volatile_acidity', 'citric_acid',
+                                 'residual_sugar', 'chlorides', 'free_sulfur_dioxide',
+                                 'total_sulfur_dioxide', 'density', 'ph',
+                                 'sulphates', 'alcohol'],
+               scaler=MinMaxScaler(),
+               return_scaler=False):
+    '''
+    Scales the 3 data splits. 
+    Takes in train, validate, and test data splits and returns their scaled counterparts.
+    If return_scalar is True, the scaler object will be returned as well
+    '''
+    # make copies of our original data so we dont gronk up anything
+    train_scaled = train.copy()
+    validate_scaled = validate.copy()
+    test_scaled = test.copy()
+    
+    #     fit the thing
+    scaler.fit(train[columns_to_scale])
+    # applying the scaler:
+    train_scaled[columns_to_scale] = pd.DataFrame(
+        scaler.transform(train[columns_to_scale]),
+        columns=train[columns_to_scale].columns.values, 
+        index = train.index)
+                                                  
+    validate_scaled[columns_to_scale] = pd.DataFrame(
+        scaler.transform(validate[columns_to_scale]),
+        columns=validate[columns_to_scale].columns.values).set_index(
+        [validate.index.values])
+    
+    test_scaled[columns_to_scale] = pd.DataFrame(scaler.transform(
+        test[columns_to_scale]), 
+        columns=test[columns_to_scale].columns.values).set_index(
+        [test.index.values])
+    
+    if return_scaler:
+        return scaler, train_scaled, validate_scaled, test_scaled
+    else:
+        return train_scaled, validate_scaled, test_scaled

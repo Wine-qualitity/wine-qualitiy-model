@@ -14,7 +14,12 @@ from sklearn.model_selection import train_test_split
 
 
 def prepare(df):
-    df.columns = df.columns.str.replace(' ', '_')
+    '''
+    This function cleans the dataframe and replaces spaces with underscores
+    '''
+    df = pd.get_dummies(df, columns=['type_of_wine'], drop_first=True)
+    df.columns = df.columns.str.replace(' ', '_').str.lower()
+    # returns the dataframe with the cleaned columns and one-hot encoded columns
     return df
 
 
