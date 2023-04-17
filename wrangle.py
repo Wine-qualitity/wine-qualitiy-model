@@ -6,7 +6,15 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
+
+
+
+
 # This is the main function that acquires the data
+
+
+
+
 def acquire_data():
     '''
    This function acquires the data from the data world and combines it into a single dataframe.
@@ -31,14 +39,16 @@ def acquire_data():
     # the function returns the dataframe
     return df
 
+
+
+
+
+
 def prepare(df):
     '''
     This function cleans the dataframe and replaces spaces with underscores
     '''
-    # Here we set the df.columns to be replaces with the columns with underscores instead of spaces to help data manipulation in pandas.
     df = pd.get_dummies(df, columns=['type_of_wine'], drop_first=True)
-#     df = pd.concat([df, encoded], axis=1)
-    
     df.columns = df.columns.str.replace(' ', '_').str.lower()
     # returns the dataframe with the cleaned columns and one-hot encoded columns
     return df
@@ -66,12 +76,21 @@ def split(df):
     # returns train validate and test dataframes
     return train, validate, test
                                        
+
+	
+	
 def wrangle():
     '''
     This function will perform acquisition, cleaning and spliting of the dataset via one command
     '''
     train, validate, test = split(prepare(acquire_data()))
+    
     return train, validate, test
+
+
+
+
+
 
 def overview(df):
     '''
@@ -130,3 +149,11 @@ def scale_data(train,
         return scaler, train_scaled, validate_scaled, test_scaled
     else:
         return train_scaled, validate_scaled, test_scaled
+	
+	
+	
+
+	
+def get_null_percentage(df):
+
+	return round(((df.isna().sum()) / len(df)) * 100, 2)
