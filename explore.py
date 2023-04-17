@@ -74,43 +74,6 @@ def get_corr_heatmap(train):
 #_______________________________
 	
 
-def best_kmeans(data,k_max):
-    
-    '''
-    EXAMPLE USEAGE
-    
-    data = scaled_train[['alcohol', 'quality']]
-    
-    best_kmeans(data,k_max=10)
-    
-     will produce elbow graph with clusters
-    '''
-   
-
-
-    means = []
-    
-    inertia = []
-    
-    for k in range(1, k_max):
-        kmeans = KMeans(n_clusters=k)
-        
-        kmeans.fit(data)
-        
-        means.append(k)
-        
-        inertia.append(kmeans.inertia_)
-        
-        fig =plt.subplots(figsize=(10,5))
-        plt.plot(means,inertia, 'o-')
-        plt.xlabel('means')
-        plt.ylabel('inertia')
-        plt.grid(True)
-        plt.show()
-
-
-
-#_______________________________
 
 
 def get_x_y_train_val_test(train,validate,test):
@@ -202,3 +165,43 @@ def apply_kmeans(data,k):
     data[f'k_means_{k}'] = kmeans.labels_
     
     return data
+
+  # _______________________________
+
+def best_kmeans(data,k_max):
+    
+    '''
+    EXAMPLE USEAGE
+    
+    data = scaled_train[['alcohol', 'quality']]
+    
+    best_kmeans(data,k_max=10)
+    
+     will produce elbow graph with clusters
+    '''
+   
+
+
+    means = []
+    
+    inertia = []
+    
+    for k in range(1, k_max):
+        kmeans = KMeans(n_clusters=k)
+        
+        kmeans.fit(data)
+        
+        means.append(k)
+        
+        inertia.append(kmeans.inertia_)
+        
+        fig =plt.subplots(figsize=(10,5))
+        plt.plot(means,inertia, 'o-')
+        plt.xlabel('means')
+        plt.ylabel('inertia')
+        plt.grid(True)
+        plt.show()
+
+
+
+	 # _______________________________
