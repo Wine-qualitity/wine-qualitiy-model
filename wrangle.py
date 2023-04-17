@@ -36,8 +36,8 @@ def prepare(df):
     This function cleans the dataframe and replaces spaces with underscores
     '''
     # Here we set the df.columns to be replaces with the columns with underscores instead of spaces to help data manipulation in pandas.
-    encoded = pd.get_dummies(df, columns=['type_of_wine'], drop_first=True)
-    df = pd.concat([df, encoded], axis=1)
+    df = pd.get_dummies(df, columns=['type_of_wine'], drop_first=True)
+#     df = pd.concat([df, encoded], axis=1)
     
     df.columns = df.columns.str.replace(' ', '_').str.lower()
     # returns the dataframe with the cleaned columns and one-hot encoded columns
@@ -66,13 +66,12 @@ def split(df):
     # returns train validate and test dataframes
     return train, validate, test
                                        
-# def wrangle():
-#     '''
-#     This function will perform acquisition, cleaning and spliting of the dataset via one command
-#     '''
-# 	train, validate, test = split(prepare(acquire_data()))
-    
-# 	return train, validate, test
+def wrangle():
+    '''
+    This function will perform acquisition, cleaning and spliting of the dataset via one command
+    '''
+    train, validate, test = split(prepare(acquire_data()))
+    return train, validate, test
 
 def overview(df):
     '''
@@ -95,7 +94,7 @@ def scale_data(train,
                test, 
                columns_to_scale=['fixed_acidity', 'volatile_acidity', 'citric_acid',
                                  'residual_sugar', 'chlorides', 'free_sulfur_dioxide',
-                                 'total_sulfur_dioxide', 'density', 'pH',
+                                 'total_sulfur_dioxide', 'density', 'ph',
                                  'sulphates', 'alcohol'],
                scaler=MinMaxScaler(),
                return_scaler=False):
