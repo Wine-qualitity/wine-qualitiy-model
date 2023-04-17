@@ -31,6 +31,86 @@ def get_baseline_model(y_train):
     # r^2 for the baseline will always be 0 by definition
     print('R^2 for baseline model: 0.0')
 
+# -------------------------------------------------------------    
+    
+def get_model_ols(X_train, X_validate, X_test,
+                  y_train, y_validate, y_test,
+                  f_features):
+    '''
+    This function will create a ordinary least squares ml model, fit on the
+    training data, and make preditions using the model, and print the metrics.
+    '''    
+    # make the model
+    lm = LinearRegression()
+    # fit the model on the training data
+    lm.fit(X_train[f_features], y_train.quality)
+    # use the model make predictions on the training data
+    y_train['quality_pred_lm'] = lm.predict(X_train[f_features])
+    # Evaluate: RMSE
+    rmse_train = mean_squared_error(y_train.quality, 
+                                    y_train.quality_pred_lm, squared=False)
+
+    # repeat usage on validate
+    y_validate['quality_pred_lm'] = lm.predict(
+        X_validate[f_features])
+    # evaluate: RMSE
+    rmse_validate = mean_squared_error(y_validate.quality, 
+                                       y_validate.quality_pred_lm, squared=False)
+    # caluculate r_2 value
+    r_2 = explained_variance_score(y_validate.quality,
+                                   y_validate.quality_pred_lm)
+
+    # print the model metrics
+    print('model : Ordinary Lease Squares-kbest')
+    print(f'RMSE_train: {rmse_train:.4}')
+    print(f'RMSE_validate: {rmse_validate:.4}')
+    print(f'difference: {rmse_validate - rmse_train:.4}')
+    print(f'R2: {r_2:.4}')
+
+    # return the model and modified polynomial features for use on test data
+    return lm
+    
+# -------------------------------------------------------------
+
+def get_model_glm(X_train, X_validate, X_test,
+                  y_train, y_validate, y_test,
+                  f_features):
+    '''
+    This function will create a generalized linear model ml model, fit on the
+    training data, and make preditions using the model, and print the metrics.
+    '''  
+    # make a tweedie regressor model
+    glm_pow1 = TweedieRegressor(power=1, alpha=0)
+    # fit the model to the training data
+    glm_pow1.fit(X_train[f_features], y_train.quality)
+    # use the model to make predictions on the training data
+    y_train['quality_pred_glm_pow1'] = glm_pow1.predict(
+        X_train[f_features])
+    # Evaluate: RMSE
+    rmse_train = mean_squared_error(y_train.quality, 
+                                    y_train.quality_pred_glm_pow1, 
+                                    squared=False)
+
+    # repeat usage on validate
+    y_validate['quality_pred_glm_pow1'] = glm_pow1.predict(
+        X_validate[f_features])
+    # evaluate: RMSE
+    rmse_validate = mean_squared_error(y_validate.quality, 
+                                       y_validate.quality_pred_glm_pow1, 
+                                       squared=False)
+    # caluculate r_2 value
+    r_2 = explained_variance_score(y_validate.quality,
+                                   y_validate.quality_pred_glm_pow1)
+    # print the model metrics
+    print('model : Generalized Linear Model-power 1-kbest')
+    print(f'RMSE_train: {rmse_train:.4}')
+    print(f'RMSE_validate: {rmse_validate:.4}')
+    print(f'difference: {rmse_validate - rmse_train:.4}')
+    print(f'R2: {r_2:.4}')
+
+    # return the model and modified polynomial features for use on test data
+    return glm_pow1    
+    
 # -------------------------------------------------------------
 
 def get_model_polynomial(X_train, X_validate, X_test,
@@ -114,7 +194,7 @@ def get_pred_error_plot(y_test):
     # create a line at zero error
     plt.axhline(label="No Error")
     # create a scatter plot with the error amounts
-    plt.scatter(y_test.quality, (y_test.quality_pred_lm2_kbest - y_test.quality), 
+    plt.scatter(y_test.iloc[:,0], (y_test.iloc[:,1] - y_test.iloc[:,0]), 
                 alpha=.5, color="grey", s=100, label="Model 2nd degree Polynomial")
     # change the x and y labels and label sizes
     plt.xlabel('Actual Wine Quality', size=14)
