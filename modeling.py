@@ -15,6 +15,16 @@ from sklearn.feature_selection import SelectKBest, f_regression, RFE
 from sklearn.cluster import KMeans
 
 
+def get_baseline_model(y_train):
+    '''
+    This function will print the mean baseline RMSE and R^2 scores
+    '''
+    y_train['quality_pred_mean'] = y_train.quality.mean()
+    rmse_train_mu = mean_squared_error(y_train.quality,
+                                   y_train.quality_pred_mean, squared=False)
+    print('Baseline Model (mean)')
+    print(f'RMSE for baseline model: {rmse_train_mu:.08}')
+    print('R^2 for baseline model: 0.0')
 
 
 def get_pred_error_plot(y_test):
