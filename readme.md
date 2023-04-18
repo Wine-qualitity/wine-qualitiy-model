@@ -64,7 +64,7 @@ This project will be focused on predicting a wine quality score based on various
 
 # Steps to Reproduce
 
-You will need to create an account for data.world in order to acquire the dataset. Once the data has been acquired, you will need to have all .py files contained in the same local directory that has the final_report.ipynb file. Run the final_report file.
+You will need to create an account for data.world in order to acquire the dataset. Once the data has been acquired, you will need to have the wrangle.py, explore.py and modeling.py files contained in the same local directory that has the final_report.ipynb file. Run the final_report file.
 
 
 # Data Citation 
