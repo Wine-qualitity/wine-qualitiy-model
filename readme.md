@@ -12,11 +12,6 @@ Wine is one of the most popular drinks worldwide. There are many wines produced 
 This project will be focused on predicting a wine quality score based on various given factors such as acidity, sugar amount, and alcohol content. We will be attempting to identify which variables have the greatest effect on a wine's quality score. We will also be building a machine learning model that will attempt to predict a wine's quality score based on our identified variables. We will approaching this project as a linear regression problem, since our target variable is numerical value.
 
 
-# Project Goal
-
-This project will be focused on predicting a wine quality score based on various given factors such as acidity, sugar amount, and alcohol content. We will be attempting to identify which variables have the most effect on a wine's quality score. We will also be building a machine learning model that will attempt to predict a wine's quality score based on our identified variables. We will approaching this project as a linear regression problem, since our target variable is numerical value.
-
-
 # Initial Hypotheses
 
 - Does alcohol content affect the quality score of the wine?
