@@ -12,11 +12,6 @@ Wine is one of the most popular drinks worldwide. There are many wines produced 
 This project will be focused on predicting a wine quality score based on various given factors such as acidity, sugar amount, and alcohol content. We will be attempting to identify which variables have the greatest effect on a wine's quality score. We will also be building a machine learning model that will attempt to predict a wine's quality score based on our identified variables. We will approaching this project as a linear regression problem, since our target variable is numerical value.
 
 
-# Project Goal
-
-This project will be focused on predicting a wine quality score based on various given factors such as acidity, sugar amount, and alcohol content. We will be attempting to identify which variables have the most effect on a wine's quality score. We will also be building a machine learning model that will attempt to predict a wine's quality score based on our identified variables. We will approaching this project as a linear regression problem, since our target variable is numerical value.
-
-
 # Initial Hypotheses
 
 - Does alcohol content affect the quality score of the wine?
@@ -69,7 +64,7 @@ This project will be focused on predicting a wine quality score based on various
 
 # Steps to Reproduce
 
-You will need to create an account for data.world in order to acquire the dataset. Once the data has been acquired, you will need to have all .py files contained in the same local directory that has the final_report.ipynb file. Run the final_report file.
+You will need to create an account for data.world in order to acquire the dataset. Once the data has been acquired, you will need to have the wrangle.py, explore.py and modeling.py files contained in the same local directory that has the final_report.ipynb file. Run the final_report file.
 
 
 # Data Citation 
