@@ -5,6 +5,7 @@ import pandas as pd
 from scipy import stats
 import matplotlib.pyplot as plt
 import seaborn as sns
+from scipy.stats import linregress
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import MinMaxScaler
 import warnings
@@ -39,27 +40,89 @@ that there is insufficient evidence to suggest a correlation between {x} and {y}
         
 #_______________________________
 
-
-		
-def get_plot_alcohol_by_quantity(train):
+def get_plot_chlorides_by_quality(train):
     '''
-    This function will show a plot of alcohol content by wine quality.
+    This function will show a plot of chlorides by wine quality.
     '''
-    # reset index
-    train = train.reset_index(drop=True)
     # set figure size
     plt.figure(figsize=(16,12))
     # create the plot
-    sns.relplot(data=train.sample(1000), x='alcohol', y='quality')
-    # add a regression line
-    plt.axhline(color='red') #not right
+    sns.lmplot(data=train.sample(1000), x='chlorides', y='quality', palette='blues',
+               # add a line showing the correlation
+               line_kws={'color': 'red'})
+    # add a title
+    plt.title('As Chlorides Increases, Quality Decreases', size=15)
+    # add axis labels
+    plt.xlabel('Chlorides of the Wine', size=14)
+    plt.ylabel('Quality Score of the Wine', size=14)
+    # add a label for the correlation line
+    plt.annotate('correlation line', (.15,5.5))
+    # show the plot
+    plt.show()
+
+#_______________________________
+    
+def get_plot_density_by_quality(train):
+    '''
+    This function will show a plot of density by wine quality.
+    '''
+    # set figure size
+    plt.figure(figsize=(16,12))
+    # create the plot
+    sns.lmplot(data=train.sample(1000), x='density', y='quality', palette='blues',
+               # add a line showing the correlation
+               line_kws={'color': 'red'})
+    # add a title
+    plt.title('As Density Increases, Quality Decreases', size=15)
+    # add axis labels
+    plt.xlabel('Density of the Wine', size=14)
+    plt.ylabel('Quality Score of the Wine', size=14)
+    # add a label for the correlation line
+    plt.annotate('correlation line', (.999,5.5))
+    # show the plot
+    plt.show()
+    
+#_______________________________
+
+def get_plot_alcohol_by_quality(train):
+    '''
+    This function will show a plot of alcohol content by wine quality.
+    '''
+    # set figure size
+    plt.figure(figsize=(16,12))
+    # create the plot
+    sns.lmplot(data=train, x='alcohol', y='quality', 
+               # add a line showing the correlation
+               line_kws={'color': 'red'})
     # add a title
     plt.title('As Alcohol Content Increases, Quality Also Increases', size=15)
     # add axis labels
     plt.xlabel('Alcohol Content in the Wine', size=14)
     plt.ylabel('Quality Score of the Wine', size=14)
+    plt.annotate('correlation line', (13.2,6.5))
+    # add a legend
     # show the plot
     plt.show()
+    
+#_______________________________
+    
+def get_plot_volatile_acidity_by_quality(train):
+    # create a hexbin plot of volatile acidity by quality
+    plt.hexbin(data=train.sample(500), x='volatile_acidity', 
+               y='quality', gridsize=8, cmap='PuBu')
+    # add a regression line
+    reg = linregress(train.volatile_acidity, train.quality)
+    plt.axline(xy1=(0, reg.intercept), slope=reg.slope, color="r")
+    # annotate the regression line
+    plt.annotate('regression line', (0.8, 4.5))
+    # add a title and resize it
+    plt.title('As Volatile Acidity goes up, Quality goes down', size=16)
+    # add axis labels and resize
+    plt.ylabel('Quality of the Wine', size=14)
+    plt.xlabel('Volatile Acidity of the Wine', size=14)
+    # display the plot
+    plt.show()
+    
 #_______________________________
 
 
@@ -212,7 +275,7 @@ def plot_kmeans_histogram():
 	
 	'''
 	train, validate, test= w.split(w.prepare(w.acquire_data()))
-	train_scaled, validate_scaled, split_scaled = w.scale_data(train, 
+	train_scaled, validate_scaled, test_scaled = w.scale_data(train, 
 	validate, 
 	test)
 	alcohol_lvl = train_scaled[['alcohol']]
@@ -236,12 +299,12 @@ def plot_kmeans_histogram():
 	
 	
 def high_low_alcohol_stat_test():    
-    train, validate, split= w.split(w.prepare(w.acquire_data()))
-    train_scaled, validate_scaled, split_scaled = w.scale_data(train, 
+    train, validate, test= w.split(w.prepare(w.acquire_data()))
+    train_scaled, validate_scaled, test_scaled = w.scale_data(train, 
                validate, 
                test)
     alcohol_lvl = train_scaled[['alcohol']]
-    alcohol_lvl = e.apply_kmeans(data= alcohol_lvl,k=3)
+    alcohol_lvl = apply_kmeans(data= alcohol_lvl,k=3)
     alcohol_lvl_dict = {
         0: 'medium',
         1: 'low',
@@ -279,7 +342,7 @@ def high_low_alcohol_stat_test():
 
 def give_hypothesis_alcohol():
     train, validate, test= w.split(w.prepare(w.acquire_data()))
-    train_scaled, validate_scaled, split_scaled = w.scale_data(train, 
+    train_scaled, validate_scaled, test_scaled = w.scale_data(train, 
                validate, 
                test)
     alcohol_lvl = train_scaled[['alcohol']]
