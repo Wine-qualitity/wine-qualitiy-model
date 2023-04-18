@@ -6,19 +6,12 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
-
-
-
-
 # This is the main function that acquires the data
-
-
-
 
 def acquire_data():
     '''
-   This function acquires the data from the data world and combines it into a single dataframe.
-'''
+    This function acquires the data from the data world and combines it into a single dataframe.
+    '''
     # First the function checks to see if the file exists
     
     if os.path.exists('wine_data.csv'):
@@ -39,22 +32,20 @@ def acquire_data():
     # the function returns the dataframe
     return df
 
-
-
-
-
+#------------------------------------------
 
 def prepare(df):
     '''
     This function cleans the dataframe and replaces spaces with underscores
     '''
+    # create dummy variables from the type_of_wine column
     df = pd.get_dummies(df, columns=['type_of_wine'], drop_first=True)
+    # rename columns to remove spaces
     df.columns = df.columns.str.replace(' ', '_').str.lower()
     # returns the dataframe with the cleaned columns and one-hot encoded columns
     return df
 
-
-
+#------------------------------------------
 
 def split(df):
     '''
@@ -66,31 +57,25 @@ def split(df):
     the original dataset, and train being .70*.80= 56% of the original dataset. 
     The function returns, train, validate and test dataframes. 
     '''
-    
-#     Here we are spliting train into .8 of the original dataset. and test into 20% of the original dataset.
-    train, test = train_test_split(df, test_size = .2, random_state=123)   
-    
+    # Here we are spliting train into .8 of the original dataset. 
+    # and test into 20% of the original dataset.
+    train, test = train_test_split(df, test_size = .2, random_state=123)
     # here we assign validate to be .3 of the train dataset 
     train, validate = train_test_split(train, test_size=.3, random_state=123)
-    
     # returns train validate and test dataframes
     return train, validate, test
-                                       
 
-	
-	
+#------------------------------------------
+
 def wrangle():
     '''
     This function will perform acquisition, cleaning and spliting of the dataset via one command
     '''
     train, validate, test = split(prepare(acquire_data()))
-    
+    # return the prepared and split datasets
     return train, validate, test
 
-
-
-
-
+#------------------------------------------
 
 def overview(df):
     '''
@@ -106,7 +91,8 @@ def overview(df):
     # # prints the describe() method call
     print('--- Column Descriptions')
     print(df.describe(include='all'))
-    
+
+#------------------------------------------    
     
 def scale_data(train, 
                validate, 
@@ -134,26 +120,28 @@ def scale_data(train,
         scaler.transform(train[columns_to_scale]),
         columns=train[columns_to_scale].columns.values, 
         index = train.index)
-                                                  
+    # apply the scaller on the validation dataset                                    
     validate_scaled[columns_to_scale] = pd.DataFrame(
         scaler.transform(validate[columns_to_scale]),
         columns=validate[columns_to_scale].columns.values).set_index(
         [validate.index.values])
-    
+    # apply the scaler on the test dataset
     test_scaled[columns_to_scale] = pd.DataFrame(scaler.transform(
         test[columns_to_scale]), 
         columns=test[columns_to_scale].columns.values).set_index(
         [test.index.values])
-    
+    # if we requested the scaler returned in the function call,
+    # then return the scaler object along with the scaled data
     if return_scaler:
         return scaler, train_scaled, validate_scaled, test_scaled
+    # otherwise return the scaled data
     else:
         return train_scaled, validate_scaled, test_scaled
-	
-	
-	
 
-	
+#------------------------------------------
+
 def get_null_percentage(df):
-
-	return round(((df.isna().sum()) / len(df)) * 100, 2)
+    '''
+    This will calculate the percentage of nulls in the dataframe
+    '''
+    return round(((df.isna().sum()) / len(df)) * 100, 2)
