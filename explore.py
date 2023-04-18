@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import MinMaxScaler
-
+import warnings
+warnings.filterwarnings('ignore')
 
 
 #_______________________________
@@ -38,71 +39,30 @@ that there is insufficient evidence to suggest a correlation between {x} and {y}
         
 #_______________________________
 
+
+		
 def get_plot_alcohol_by_quantity(train):
     '''
     This function will show a plot of alcohol content by wine quality.
     '''
+    # reset index
+    train = train.reset_index(drop=True)
     # set figure size
     plt.figure(figsize=(16,12))
     # create the plot
-    sns.lmplot(data=train, x='alcohol', y='quality', 
-               # add a line showing the correlation
-               line_kws={'color': 'red'})
+    sns.relplot(data=train.sample(1000), x='alcohol', y='quality')
+    # add a regression line
+    plt.axhline(color='red') #not right
     # add a title
     plt.title('As Alcohol Content Increases, Quality Also Increases', size=15)
     # add axis labels
-    plt.xlabel('Alcohol Content of the Wine (% vol.)', size=14)
+    plt.xlabel('Alcohol Content in the Wine', size=14)
     plt.ylabel('Quality Score of the Wine', size=14)
-    plt.annotate('correlation line', (13.2,6.5))
-    # add a legend
     # show the plot
     plt.show()
-    
 #_______________________________
 
-def get_plot_density_by_quantity(train):
-    '''
-    This function will show a plot of density by wine quality.
-    '''
-    # set figure size
-    plt.figure(figsize=(16,12))
-    # create the plot
-    sns.lmplot(data=train.sample(1000), x='density', y='quality', palette='blues',
-               # add a line showing the correlation
-               line_kws={'color': 'red'})
-    # add a title
-    plt.title('As Density Increases, Quality Decreases', size=15)
-    # add axis labels
-    plt.xlabel('Density of the Wine (g/ml)', size=14)
-    plt.ylabel('Quality Score of the Wine', size=14)
-    # add a label for the correlation line
-    plt.annotate('correlation line', (.999,5.5))
-    # show the plot
-    plt.show()
 
-#_______________________________
-    
-def get_plot_chlorides_by_quantity(train):
-    '''
-    This function will show a plot of chlorides by wine quality.
-    '''
-    # set figure size
-    plt.figure(figsize=(16,12))
-    # create the plot
-    sns.lmplot(data=train.sample(1000), x='chlorides', y='quality', palette='blues',
-               # add a line showing the correlation
-               line_kws={'color': 'red'})
-    # add a title
-    plt.title('As Chlorides Increases, Quality Decreases', size=15)
-    # add axis labels
-    plt.xlabel('Chlorides in the wine (g/l)', size=14)
-    plt.ylabel('Quality Score of the Wine', size=14)
-    # add a label for the correlation line
-    plt.annotate('correlation line', (.15,5.5))
-    # show the plot
-    plt.show()
-    
-#_______________________________
 
 def get_corr_heatmap(train):
     corr_matrix = train.corr()
@@ -195,18 +155,6 @@ def scale_data(train,
 
 	
 	
-	
-	
-def apply_kmeans(data,k):
-
-    kmeans = KMeans(n_clusters=k)
-
-    kmeans.fit(data)
-
-    data[f'k_means_{k}'] = kmeans.labels_
-    
-    return data
-
   # _______________________________
 
 def best_kmeans(data,k_max):
@@ -246,3 +194,130 @@ def best_kmeans(data,k_max):
 
 
 	 # _______________________________
+
+def apply_kmeans(data,k):
+
+    kmeans = KMeans(n_clusters=k)
+
+    kmeans.fit(data)
+
+    data[f'k_means_{k}'] = kmeans.labels_
+    
+    return data
+
+
+
+def plot_kmeans_histogram():
+	'''
+	
+	'''
+	train, validate, test= w.split(w.prepare(w.acquire_data()))
+	train_scaled, validate_scaled, split_scaled = w.scale_data(train, 
+	validate, 
+	test)
+	alcohol_lvl = train_scaled[['alcohol']]
+	alcohol_lvl = apply_kmeans(data= alcohol_lvl,k=3)
+	alcohol_lvl_dict = {
+		0: 'medium',
+		1: 'low',
+		2: 'high'
+	}
+
+	alcohol_lvl['clusters'] = alcohol_lvl['k_means_3'].map(alcohol_lvl_dict)
+
+
+	fig = sns.histplot(data=alcohol_lvl, x=alcohol_lvl['alcohol'], hue=alcohol_lvl.clusters, palette="YlOrBr")
+	plt.title('K Means Distribution of Alcohol', size=25)
+	plt.xlabel('Alcohol content', size=25)
+	plt.ylabel('Wine Count', size=25)
+	plt.legend(labels=['high', 'low', 'medium'])
+	plt.savefig('histogram_clusters_on_alcohol.png')
+	
+	
+	
+def high_low_alcohol_stat_test():    
+    train, validate, split= w.split(w.prepare(w.acquire_data()))
+    train_scaled, validate_scaled, split_scaled = w.scale_data(train, 
+               validate, 
+               test)
+    alcohol_lvl = train_scaled[['alcohol']]
+    alcohol_lvl = e.apply_kmeans(data= alcohol_lvl,k=3)
+    alcohol_lvl_dict = {
+        0: 'medium',
+        1: 'low',
+        2: 'high'
+    }
+
+    alcohol_lvl['clusters'] = alcohol_lvl['k_means_3'].map(alcohol_lvl_dict)
+
+    low_alc = alcohol_lvl[alcohol_lvl['clusters'] == 'low']
+    med_alc = alcohol_lvl[alcohol_lvl['clusters'] == 'medium']
+    high_alc = alcohol_lvl[alcohol_lvl['clusters'] == 'high']
+
+    combine_me = [low_alc,med_alc]
+    not_high_alc = pd.concat(combine_me, axis=0)
+
+    # isoslate quality from both df
+
+    qual_not_high_alc = not_high_alc.quality
+
+    qual_high_alc = high_alc.quality
+
+
+    # set our alpha 
+    alpha = 0.05
+
+    t, p = stats.ttest_ind(qual_high_alc, qual_not_high_alc, equal_var=False)
+    t, p / 2
+
+    if p / 2 > alpha:
+        print("We fail to reject null hypothesis")
+    elif t < 0:
+        print("We fail to reject null hypothesis")
+    else:
+        print("We reject null hypothesis")
+
+def give_hypothesis_alcohol():
+    train, validate, test= w.split(w.prepare(w.acquire_data()))
+    train_scaled, validate_scaled, split_scaled = w.scale_data(train, 
+               validate, 
+               test)
+    alcohol_lvl = train_scaled[['alcohol']]
+    alcohol_lvl = apply_kmeans(data= alcohol_lvl,k=3)
+    alcohol_lvl_dict = {
+        0: 'medium',
+        1: 'low',
+        2: 'high'
+    }
+
+    alcohol_lvl['clusters'] = alcohol_lvl['k_means_3'].map(alcohol_lvl_dict)
+
+    low_alc = alcohol_lvl[alcohol_lvl['clusters'] == 'low']
+    med_alc = alcohol_lvl[alcohol_lvl['clusters'] == 'medium']
+    high_alc = alcohol_lvl[alcohol_lvl['clusters'] == 'high']
+
+    combine_me = [low_alc,med_alc,]
+    not_high_alc = pd.concat(combine_me, axis=0)
+    not_high_alc['quality'] = train['quality']
+    high_alc['quality'] = train['quality']
+
+
+    # isoslate quality from both df
+
+    qual_not_high_alc = not_high_alc.quality
+
+    qual_high_alc = high_alc.quality
+
+
+    # set our alpha 
+    alpha = 0.05
+
+    t, p = stats.ttest_ind(qual_high_alc, qual_not_high_alc, equal_var=False)
+    t, p / 2
+
+    if p / 2 > alpha:
+        print("We fail to reject null hypothesis")
+    elif t < 0:
+        print("We fail to reject null hypothesis")
+    else:
+        print("We reject null hypothesis")
